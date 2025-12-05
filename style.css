@@ -1,0 +1,252 @@
+body {
+    /* Royal Blue to Dark Blue Gradient (Sega/Nintendo vibe) */
+    background: linear-gradient(180deg, #0000AA 0%, #000044 100%);
+    color: #FFFFFF; 
+    font-family: 'Press Start 2P', monospace;
+    display: flex; 
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden; 
+}
+
+/* --- Falling Money Animation --- */
+#rain-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Let clicks pass through */
+    z-index: 0; /* Behind everything */
+    overflow: hidden;
+}
+
+.money {
+    position: absolute;
+    top: -50px;
+    color: #85bb65; /* Dollar Bill Green */
+    font-size: 24px;
+    opacity: 0.6;
+    animation: fall linear infinite;
+    z-index: 0;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-50px) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* --- Header & Text --- */
+.blink {
+    animation: blinker 1s step-end infinite; /* step-end makes it flash hard */
+    color: #FFFFFF;
+    /* Red and Gold shadow for that Coke/Christmas feel */
+    text-shadow: 4px 4px 0 #D40000, 8px 8px 0 #FFD700;
+    font-size: 2.5rem;
+    text-align: center;
+    padding: 15px 0;
+    flex-shrink: 0; 
+    z-index: 10;
+    position: relative;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+#message-area {
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 15px 0;
+    flex-shrink: 0; 
+    height: 60px; 
+    color: #FFD700; 
+    text-shadow: 2px 2px #000;
+    z-index: 10;
+    position: relative;
+}
+
+/* --- The Main Card Grid --- */
+#card-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    flex-grow: 1; 
+    padding: 20px;
+    gap: 15px;
+    perspective: 2000px;
+    z-index: 1; /* Above the rain */
+}
+
+/* --- Individual Grid Cards --- */
+.grid-card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.3s ease; 
+    z-index: 1;
+}
+
+/* --- Card Faces --- */
+.card__face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    /* Thick Gold Border */
+    border: 4px solid #FFD700; 
+    border-radius: 4px; /* Less rounded = more retro */
+    box-shadow: 6px 6px 0px #000000; /* Hard black shadow (Arcade style) */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
+}
+
+/* Front: Coke Red with Checkers */
+.card__face--front {
+    background-color: #D40000; 
+    font-size: 2.2rem; 
+    color: #FFFFFF;
+    text-shadow: 4px 4px 0 #000;
+    
+    /* Subtle checker pattern */
+    background-image: 
+        linear-gradient(45deg, #A00000 25%, transparent 25%, transparent 75%, #A00000 75%, #A00000),
+        linear-gradient(45deg, #A00000 25%, transparent 25%, transparent 75%, #A00000 75%, #A00000);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+}
+
+/* Back: White */
+.card__face--back {
+    background-color: #FFFFFF;
+    color: #000000;
+    transform: rotateY(180deg);
+    padding: 10px;
+    box-sizing: border-box;
+    justify-content: flex-start; 
+    border-color: #999; 
+}
+
+.card-content-day {
+    color: #D40000; 
+    font-size: 1rem;
+    border-bottom: 3px solid #FFD700; 
+    width: 100%;
+    text-align: center;
+    padding-bottom: 8px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.card-content-text {
+    font-size: 0.8rem; 
+    line-height: 1.4;
+    text-align: center;
+    width: 100%;
+    margin-top: 5px;
+    overflow-y: auto;
+    font-weight: bold;
+    color: #333;
+}
+
+/* --- Logic States --- */
+.grid-card.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.grid-card.zoomed {
+    z-index: 999;
+}
+
+/* --- Deny Animation --- */
+.grid-card.deny .card__face {
+    animation: deny 0.4s ease;
+}
+
+@keyframes deny {
+    0%, 100% { border-color: #FFD700; }
+    50% { border-color: #FFFFFF; background-color: #550000; }
+}
+
+/* --- Start Screen Overlay --- */
+#start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* PURE BLACK BACKGROUND */
+    background-color: #000000;
+    z-index: 9999; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+#start-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.5rem;
+    padding: 20px 40px;
+    
+    /* RETRO BUTTON STYLE */
+    background-color: #D40000; /* Flat Red */
+    color: #FFFF00; /* Yellow Text */
+    border: 4px solid #FFFF00; /* Yellow Border */
+    box-shadow: 6px 6px 0px #0000FF; /* Hard Blue Shadow */
+    
+    cursor: pointer;
+    text-transform: uppercase;
+    animation: pulse-retro 0.8s infinite;
+}
+
+#start-btn:hover {
+    background-color: #FF0000;
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px #0000FF;
+}
+
+#start-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px #0000FF;
+}
+
+@keyframes pulse-retro {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+CSS
+
+/* --- MONEY RAIN EFFECT --- */
+.money {
+    position: fixed;
+    top: -50px;
+    color: #4ade80; /* Bright Money Green */
+    font-family: 'Press Start 2P', cursive;
+    z-index: -1; /* Behind the cards */
+    user-select: none;
+    pointer-events: none; /* Allows clicking through them */
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}

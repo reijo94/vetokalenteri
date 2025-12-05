@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>!! KEIKKAUS VETOKALENTERI !!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div id="start-screen">
+        <h1 class="blink">!! HYVÄÄ JOULUA SOTURI !!</h1>
+        <p>MIN. PANOS 0,00€</p>
+        <button id="start-btn">ALOITA TÄSTÄ</button>
+    </div>
+
+    <h1 class="blink">!! HYVÄÄ JOULUA !!</h1>
+
+    <div id="card-grid"></div>
+
+    <div id="message-area"></div>
+
+    <audio id="snd-zoom" src="sounds/zoom.mp3"></audio>
+    <audio id="snd-flip" src="sounds/flip.mp3"></audio>
+    <audio id="snd-return" src="sounds/return.mp3"></audio>
+    <audio id="snd-deny" src="sounds/deny.mp3"></audio>
+    <audio id="bg-music" src="sounds/music.mp3" loop></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
